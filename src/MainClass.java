@@ -10,49 +10,28 @@ public class MainClass {
 
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("test.txt");
-        byte[] data = Files.readAllBytes(path);
-        int nob;
-        if (data.length % bs < 56)
-            nob = data.length / bs + 1;
-        else
-            nob = data.length / bs + 2;
-        //number of blocks
-        byte[][] temp = new byte[nob][bs];
-        int i = 0;
-        while (i < data.length / bs) {
+        byte[] raw = Files.readAllBytes(path);
+        //cb -amount of clear blocks
+        //eb - amount of extra blocks
+        //res - residue
+        int cb = raw.length / bs;
+        int res = raw.length % bs;
+        int eb = 0;
+        if (res > 56)
+            eb = 1;
+        byte[][] data = new byte[cb + eb+1][bs];
+        for (int i = 0; i < cb; i++)
             for (int j = 0; j < bs; j++)
-                temp[i][j] = data[(i + 1) * j];
-            i++;
-        }
-        if (data.length % bs > 0) {
-            for (int j = 0; j < data.length % bs; j++)
-                temp[i][j] = data[(i + 1) * j];
-            temp[i][data.length % bs] = Byte.MIN_VALUE;
-
-            if (data.length % bs < 56) {
-                for (int j = data.length % bs + 1; j < 56; j++)
-                    temp[i][j] = 0;
-                //size inserting
-            } else {
-                for (int j = data.length % bs + 1; j < bs; j++)
-                    temp[i][j] = 0;
-                for (int j = 0; j < 56; j++) {
-                    temp[i + 1][j] = 0;
-                }
-            }   //size inserting
-        } else {
-            temp[i][0] = Byte.MIN_VALUE;
-            for (int j = 1; j < 56; j++)
-                temp[i][j] = 0;
-            //size inserting
-        }
-        //Minimal value of byte = 10000000 in binary representation
-        for (int j = 0; j < 2; j++) {
-            for (int k = 0; k < 64; k++) {
-                for (int q = 7; q >= 0; q--)
-                    System.out.print(temp[j][k] >> q & 1);
-                System.out.print(" ");
-            }
+                data[i][j] = raw[j + bs * i];
+        for (int i = 0; i < res; i++)
+            data[cb][i] = raw[i + cb * bs];
+        data[cb][res] = Byte.MIN_VALUE;
+        byte[] size = size(raw.length);
+        for (int i = 0; i < size.length; i++)
+            data[cb + eb][bs - 4 + i] = size[i];
+        for (int i = 0; i < cb + eb; i++) {
+            for (int j = 0; j < bs; j++)
+                System.out.print(String.format("0x%x ", data[i][j]));
             System.out.println();
         }
     }
@@ -62,11 +41,11 @@ public class MainClass {
         /*for (byte b : bytes) {
             System.out.format("0x%x ", b);
         }*/
-        for (byte b : bytes) {
+        /*for (byte b : bytes) {
             for (int q = 7; q >= 0; q--)
-            System.out.print(b >> q & 1);
+                System.out.print(b >> q & 1);
             System.out.print(" ");
-        }
+        } */
         return bytes;
     }
 }
