@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f157b12-f4de-4730-9928-8e0122710e19" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/MainClass.java" afterPath="$PROJECT_DIR$/src/MainClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/temp.txt" afterPath="$PROJECT_DIR$/temp.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.txt" afterPath="$PROJECT_DIR$/test.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sha-1.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/MainClass.java" changelist="2f157b12-f4de-4730-9928-8e0122710e19" time="1443182699354" ignored="false" />
     <file path="/fragment.java" changelist="2f157b12-f4de-4730-9928-8e0122710e19" time="1443173764144" ignored="false" />
-    <file path="/Dummy.txt" changelist="2f157b12-f4de-4730-9928-8e0122710e19" time="1443173565621" ignored="false" />
+    <file path="/Dummy.txt" changelist="2f157b12-f4de-4730-9928-8e0122710e19" time="1443183152844" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +72,7 @@
       <file leaf-file-name="MainClass.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="35" selection-start="366" selection-end="366" vertical-scroll-proportion="0.36980307">
+            <state line="13" column="92" selection-start="419" selection-end="419" vertical-scroll-proportion="0.40700218">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -100,6 +97,11 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Denis Markin" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitLogSettings">
@@ -327,6 +329,11 @@
       <created>1441359583697</created>
       <updated>1441359583697</updated>
     </task>
+    <task id="LOCAL-00001" summary="first version of computing. Collisions!">
+      <created>1443183168154</created>
+      <updated>1443183168154</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -397,7 +404,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Algorithm of padding updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="first version of computing. Collisions!" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -412,6 +419,7 @@
     <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="Algorithm of padding updated" />
+    <MESSAGE value="first version of computing. Collisions!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -490,7 +498,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/temp.txt">
@@ -502,7 +512,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="35" selection-start="366" selection-end="366" vertical-scroll-proportion="0.36980307">
+        <state line="13" column="92" selection-start="419" selection-end="419" vertical-scroll-proportion="0.40700218">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
