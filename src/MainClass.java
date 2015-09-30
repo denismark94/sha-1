@@ -52,8 +52,8 @@ public class MainClass {
             int[] w = new int[80];
             for (int j = 0; j < 16; j++)
                 //transformation from (4x8)bit blocks to (1x32)block
-                w[i] = data[i][j * 4] << 8 | data[i][4 * j + 1] << 8 | data[i][4 * j + 2] << 8 | data[i][4 * j + 3];
-
+                //e  = (((a & 0xff) << 8 | (b&0xff)) << 8 | (c&0xff)) << 8 | (d&0xff);
+                w[j] = (((data[i][j * 4]&0xff) << 8 | (data[i][4 * j + 1]&0xff)) << 8 | (data[i][4 * j + 2]&0xff)) << 8 | (data[i][4 * j + 3]&0xff);
             for (int j = 16; j < 80; j++) {
                 w[j] = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
                 //left cyclic shift
