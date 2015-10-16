@@ -1,4 +1,3 @@
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -10,11 +9,23 @@ public class MainClass {
     //bs- block size. 512 bit, 64 bytes
 
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("test.txt");
+        /*Path path = Paths.get("test.txt");
         byte[] hash = computeHash(pad(path));
         for (int i = 0; i < hash.length; i++) {
             System.out.print(String.format("%x", hash[i]));
+        }*/
+        int a = 0x12345678;
+        System.out.println(String.format("%x",a));
+/*        for (int i = 0; i < 5; i++) {
+            a = a << 1 | (a >> 31);
+        }*/
+        int x,z = a;
+        for (int l = 0; l < 5; l++) {
+            x = z >>> 31;
+            z = z << 1 | x;
         }
+        System.out.println(String.format("%x",z));
+
     }
 
     public static byte[][] pad(Path path) throws IOException {
@@ -57,7 +68,8 @@ public class MainClass {
             for (int j = 16; j < 80; j++) {
                 w[j] = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
                 //left cyclic shift
-                w[j] = w[j] << 1 | (w[j] >>> 31);
+                temp = w[j]>>>31;
+                w[j] = w[j] << 1 | temp;
             }
 
             a = h[0];
@@ -67,6 +79,7 @@ public class MainClass {
             e = h[4];
 
             for (int j = 0; j < 80; j++) {
+
                 if ((j >= 0) && (j <= 19)) {
                     f = (b & c) | ((~b) & d);
                     k = 0x5A827999;
@@ -83,7 +96,13 @@ public class MainClass {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
-                temp = (a << 5) + f + e + k + w[i];
+                int x,z,y;
+                z = a;
+                for (int l = 0; l < 5; l++) {
+                    x = z >>> 31;
+                    z = z << 1 | x;
+                }
+                temp = ((a << 5)|(a>>31)) + f + e + k + w[i];
                 e = d;
                 d = c;
                 c = b << 30;
@@ -98,6 +117,10 @@ public class MainClass {
         }
         byte[] result = new byte[20];
         byte[] cache;
+        for (int i = 0; i < h.length; i++) {
+            System.out.println(String.format("%x",h[i]));
+        }
+
         for (int i = 0; i < 5; i++) {
             cache = ByteBuffer.allocate(4).putInt(h[i]).array();
             for (int j = 0; j < 4; j++)
