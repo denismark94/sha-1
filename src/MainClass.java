@@ -11,9 +11,8 @@ public class MainClass {
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("test.txt");
         byte[] hash = computeHash(pad(path));
-        for (int i = 0; i < hash.length; i++) {
+        for (int i = 0; i < hash.length; i++)
             System.out.print(String.format("%x", hash[i]));
-        }
         System.out.println();
     }
 
@@ -52,21 +51,11 @@ public class MainClass {
             int[] w = new int[80];
             for (int j = 0; j < 16; j++)
                 //transformation from (4x8)bit blocks to (1x32)block
-                for (int l = 0; l < 4; l++) {
-                    for (int m = 7; m >= 0; m--) {
-                        w[j] = w[j] | (data[i][j*4+l] >> m & 1);
-                        if (m > 0)
-                            w[j] = w[j]<<1;
-                    }
-                    if (l < 3)
-                        w[j] = w[j] << 8;
-                }
-                //w[j] = (int) data[i][j * 4] << 8 | (int) data[i][4 * j + 1] << 8 | (int) data[i][4 * j + 2] << 8 | (int) data[i][4 * j + 3];
-
+                w[j] = (((data[i][j * 4] & 0xff) << 8 | (data[i][4 * j + 1] & 0xff)) << 8 | (data[i][4 * j + 2] & 0xff)) << 8 | (data[i][4 * j + 3] & 0xff);
             for (int j = 16; j < 80; j++) {
                 w[j] = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
                 //left cyclic shift
-                w[j] = w[j] << 1 | (w[j] >>> 31);
+                w[j] = leftCyclicShift(w[j],1);
             }
 
             a = h[0];
@@ -76,6 +65,7 @@ public class MainClass {
             e = h[4];
 
             for (int j = 0; j < 80; j++) {
+
                 if ((j >= 0) && (j <= 19)) {
                     f = (b & c) | ((~b) & d);
                     k = 0x5A827999;
@@ -92,10 +82,10 @@ public class MainClass {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
-                temp = (a << 5) + f + e + k + w[i];
+                temp = leftCyclicShift(a,5) + f + e + k + w[i];
                 e = d;
                 d = c;
-                c = b << 30;
+                c = leftCyclicShift(b,30);
                 b = a;
                 a = temp;
             }
@@ -107,10 +97,31 @@ public class MainClass {
         }
         byte[] result = new byte[20];
         byte[] cache;
+        for (int i = 0; i < h.length; i++) {
+            System.out.println(bits(h[i]));
+        }
+
         for (int i = 0; i < 5; i++) {
             cache = ByteBuffer.allocate(4).putInt(h[i]).array();
             for (int j = 0; j < 4; j++)
                 result[(i * 4) + j] = cache[j];
+        }
+        return result;
+    }
+
+    public static int leftCyclicShift(int x, int count) {
+        int temp;
+        for (int i = 0; i < count; i++) {
+            temp = x >>> 31;
+            x = x << 1 | temp;
+        }
+        return x;
+    }
+
+    public static String bits(int a) {
+        String result = "";
+        for (int i = 0; i < 32; i++) {
+            result += a >>> (31 - i) & 1;
         }
         return result;
     }
