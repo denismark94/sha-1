@@ -9,23 +9,12 @@ public class MainClass {
     //bs- block size. 512 bit, 64 bytes
 
     public static void main(String[] args) throws IOException {
-        /*Path path = Paths.get("test.txt");
+        Path path = Paths.get("test.txt");
         byte[] hash = computeHash(pad(path));
         for (int i = 0; i < hash.length; i++) {
             System.out.print(String.format("%x", hash[i]));
-        }*/
-        int a = 0x12345678;
-        System.out.println(String.format("%x",a));
-/*        for (int i = 0; i < 5; i++) {
-            a = a << 1 | (a >> 31);
-        }*/
-        int x,z = a;
-        for (int l = 0; l < 5; l++) {
-            x = z >>> 31;
-            z = z << 1 | x;
         }
-        System.out.println(String.format("%x",z));
-
+        System.out.println();
     }
 
     public static byte[][] pad(Path path) throws IOException {
@@ -63,13 +52,21 @@ public class MainClass {
             int[] w = new int[80];
             for (int j = 0; j < 16; j++)
                 //transformation from (4x8)bit blocks to (1x32)block
-                //e  = (((a & 0xff) << 8 | (b&0xff)) << 8 | (c&0xff)) << 8 | (d&0xff);
-                w[j] = (((data[i][j * 4]&0xff) << 8 | (data[i][4 * j + 1]&0xff)) << 8 | (data[i][4 * j + 2]&0xff)) << 8 | (data[i][4 * j + 3]&0xff);
+                for (int l = 0; l < 4; l++) {
+                    for (int m = 7; m >= 0; m--) {
+                        w[j] = w[j] | (data[i][j*4+l] >> m & 1);
+                        if (m > 0)
+                            w[j] = w[j]<<1;
+                    }
+                    if (l < 3)
+                        w[j] = w[j] << 8;
+                }
+                //w[j] = (int) data[i][j * 4] << 8 | (int) data[i][4 * j + 1] << 8 | (int) data[i][4 * j + 2] << 8 | (int) data[i][4 * j + 3];
+
             for (int j = 16; j < 80; j++) {
                 w[j] = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
                 //left cyclic shift
-                temp = w[j]>>>31;
-                w[j] = w[j] << 1 | temp;
+                w[j] = w[j] << 1 | (w[j] >>> 31);
             }
 
             a = h[0];
@@ -79,7 +76,6 @@ public class MainClass {
             e = h[4];
 
             for (int j = 0; j < 80; j++) {
-
                 if ((j >= 0) && (j <= 19)) {
                     f = (b & c) | ((~b) & d);
                     k = 0x5A827999;
@@ -96,13 +92,7 @@ public class MainClass {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
-                int x,z,y;
-                z = a;
-                for (int l = 0; l < 5; l++) {
-                    x = z >>> 31;
-                    z = z << 1 | x;
-                }
-                temp = ((a << 5)|(a>>31)) + f + e + k + w[i];
+                temp = (a << 5) + f + e + k + w[i];
                 e = d;
                 d = c;
                 c = b << 30;
@@ -117,10 +107,6 @@ public class MainClass {
         }
         byte[] result = new byte[20];
         byte[] cache;
-        for (int i = 0; i < h.length; i++) {
-            System.out.println(String.format("%x",h[i]));
-        }
-
         for (int i = 0; i < 5; i++) {
             cache = ByteBuffer.allocate(4).putInt(h[i]).array();
             for (int j = 0; j < 4; j++)
