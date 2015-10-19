@@ -3,14 +3,19 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class MainClass {
     static int bs = 64;
     //bs- block size. 512 bit, 64 bytes
 
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("test.txt");
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Введите путь к файлу");
+        String respond = scan.nextLine();
+        Path path = Paths.get(respond);
         byte[] hash = computeHash(pad(path));
+        System.out.println("Хеш-сумма:");
         for (int i = 0; i < hash.length; i++)
             System.out.print(String.format("%x", hash[i]));
         System.out.println();
@@ -82,7 +87,7 @@ public class MainClass {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
-                temp = leftCyclicShift(a,5) + f + e + k + w[i];
+                temp = leftCyclicShift(a,5) + f + e + k + w[j];
                 e = d;
                 d = c;
                 c = leftCyclicShift(b,30);
@@ -97,10 +102,6 @@ public class MainClass {
         }
         byte[] result = new byte[20];
         byte[] cache;
-        for (int i = 0; i < h.length; i++) {
-            System.out.println(bits(h[i]));
-        }
-
         for (int i = 0; i < 5; i++) {
             cache = ByteBuffer.allocate(4).putInt(h[i]).array();
             for (int j = 0; j < 4; j++)
